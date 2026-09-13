@@ -1,0 +1,11 @@
+units: mm
+checks:
+  overhang:
+    max_angle_deg: 45
+    min_area_mm2: 1.0
+  thin_wall:
+    min_thickness_mm: 1.0
+    ray_offset_mm: 0.01
+  sharp_corner:
+    max_concave_angle_deg: 60
+    min_edge_length_mm: 2.0

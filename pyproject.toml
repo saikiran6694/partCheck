@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "partcheck"
+version = "0.1.0"
+description = "Automated manufacturability review for 3D parts (STL)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "trimesh>=4.0",
+    "numpy>=1.24",
+    "scipy>=1.11",
+    "networkx>=3.1",
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "typer>=0.12",
+]
+
+[project.optional-dependencies]
+fast = ["embreex"]
+dev = ["pytest>=7.4", "ruff>=0.5"]
+llm = ["anthropic"]
+
+[project.scripts]
+partcheck = "partcheck.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/partcheck"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint.per-file-ignores]
+# Typer's recommended style calls typer.Argument()/typer.Option() as defaults.
+"src/partcheck/cli.py" = ["B008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
