@@ -38,7 +38,10 @@ def load_part(path: str, units: str = "mm") -> trimesh.Trimesh:
         mesh.apply_scale(scale)
 
     mesh.merge_vertices()
-    mesh.fix_normals()
+    # multibody=False: trimesh's auto-detect (multibody=None) reorients each
+    # disjoint shell to face outward from its own centroid, which inverts a
+    # correctly-oriented cavity wall (e.g. a shelled part's inner surface).
+    mesh.fix_normals(multibody=False)
 
     if not mesh.is_watertight:
         logger.warning(
