@@ -7,7 +7,12 @@ from pathlib import Path
 import typer
 import yaml
 
-from partcheck.checks import CHECKS, OverhangCheck  # noqa: F401  (registers checks)
+from partcheck.checks import (  # noqa: F401  (imports register each check)
+    CHECKS,
+    OverhangCheck,
+    SharpCornerCheck,
+    ThinWallCheck,
+)
 from partcheck.loader import load_part
 from partcheck.report import build_report
 
