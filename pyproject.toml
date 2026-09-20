@@ -21,8 +21,8 @@ dependencies = [
 
 [project.optional-dependencies]
 fast = ["embreex"]
-dev = ["pytest>=7.4", "ruff>=0.5", "cadquery>=2.4", "manifold3d>=2.5"]
-llm = ["anthropic"]
+dev = ["pytest>=7.4", "ruff>=0.5", "cadquery>=2.4", "manifold3d>=2.5", "requests>=2.31", "python-dotenv>=1.0"]
+llm = ["requests>=2.31", "python-dotenv>=1.0"]
 
 [project.scripts]
 partcheck = "partcheck.cli:app"
