@@ -69,6 +69,11 @@ def check(
     fmt: OutputFormat = typer.Option(
         OutputFormat.TEXT, "--format", help="Stdout report format: text, json, or md."
     ),
+    explain: bool = typer.Option(
+        False,
+        "--explain",
+        help="Call Groq to explain findings in plain language (requires GROQ_API_KEY).",
+    ),
 ) -> None:
     """Run all registered checks against PART, print a report, and write a JSON
     report, a Markdown report, and a highlighted GLB (flagged faces coloured
@@ -104,6 +109,27 @@ def check(
     typer.echo(f"Wrote {out_dir / f'{stem}_report.json'}")
     typer.echo(f"Wrote {out_dir / f'{stem}_report.md'}")
     typer.echo(f"Wrote {out_dir / f'{stem}_highlighted.glb'}")
+
+    if explain:
+        try:
+            from partcheck.explain import ExplainError
+            from partcheck.explain import explain as generate_explanation
+        except ImportError:
+            typer.echo("\n--explain requires the 'llm' extra: pip install '.[llm]'")
+            return
+
+        typer.echo("")
+        try:
+            explanation = generate_explanation(report)
+        except ExplainError as e:
+            typer.echo(f"Explanation failed: {e}")
+            return
+
+        typer.echo("Explanation:")
+        typer.echo(explanation)
+        explanation_path = out_dir / f"{stem}_explanation.md"
+        explanation_path.write_text(explanation + "\n")
+        typer.echo(f"\nWrote {explanation_path}")
 
 
 if __name__ == "__main__":
